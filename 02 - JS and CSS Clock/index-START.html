@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>JS + CSS Clock</title>
+
 </head>
 <body>
 
@@ -18,7 +19,7 @@
 
   <style>
     html {
-      background:#018DED url(http://unsplash.it/1500/1000?image=881&blur=50);
+      background:#018DED url(http://unsplash.it/1500/1000?image=880&blur=95);
       background-size:cover;
       font-family:'helvetica neue';
       text-align: center;
@@ -41,7 +42,7 @@
       border-radius:50%;
       margin:50px auto;
       position: relative;
-      padding:2rem;
+      padding:1rem;
       box-shadow:
         0 0 0 4px rgba(0,0,0,0.1),
         inset 0 0 0 3px #EFEFEF,
@@ -58,16 +59,60 @@
 
     .hand {
       width:50%;
-      height:6px;
+      height:4px;
       background:black;
       position: absolute;
       top:50%;
+      right: 50%;
+      transform: rotate(90deg);
+      transform-origin: 100%;
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0, 2.59, 0.11, 0.62);
+    }
+
+    .second-hand {
+      height: 2px;
+      background: red;
+    }
+    .minute-hand {
+      width: 45%;
+    }
+    .hour-hand {
+      width: 35%;
+    }
+
+    .clock-face::after {
+      content: ' ';
+      border: 5px solid white;
+      border-radius:50%;
+      position: absolute;
+      top:49%;
+      left:49%;
     }
 
   </style>
 
   <script>
+    const secondsHand = document.querySelector('.second-hand');
+    const minutesHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
+    
+    function setDate(){
+      const now = new Date();
+      console.log(`${now.getHours()%12}:${now.getMinutes()}:${now.getSeconds()}`)
+      rotateHand(secondsHand, (now.getSeconds() * 6) + 90);
+      rotateHand(minutesHand, (now.getMinutes() * 6) + 90);
+      rotateHand(hourHand, ((now.getHours() % 12) * 30) + 90);
+    }
 
+
+    const rotateHand = (hand, degrees) => {
+      hand.style.transform = `rotate(${degrees}deg)`;
+    }
+
+
+
+    setInterval(setDate, 1000);
 
   </script>
 </body>
